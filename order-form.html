@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Order Form</title>
-</head>
-<body>
-  <h2>🛒 Form Order</h2>
-  <form action="https://your-railway-app.up.railway.app/order-form" method="POST">
-    <label>Nama:</label><br>
-    <input type="text" name="nama" required><br><br>
-
-    <label>Produk:</label><br>
-    <input type="text" name="produk" required><br><br>
-
-    <label>Jumlah:</label><br>
-    <input type="number" name="jumlah" required><br><br>
-
-    <label>Catatan:</label><br>
-    <textarea name="catatan"></textarea><br><br>
-
-    <button type="submit">Kirim Order</button>
-  </form>
-</body>
-</html>
+<form action="https://order-bot-nu.vercel.app/.vercel.app/api/order" method="POST">
+  <input type="text" name="nama" placeholder="Nama" required>
+  <input type="text" name="produk" placeholder="Produk" required>
+  <input type="number" name="jumlah" placeholder="Jumlah" required>
+  <textarea name="catatan" placeholder="Catatan"></textarea>
+  <button type="submit">Kirim Order</button>
+</form>
