@@ -1,38 +1,33 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const TelegramBot = require('node-telegram-bot-api');
+import express from "express";
+import bodyParser from "body-parser";
+import fetch from "node-fetch";
 
 const app = express();
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// === KONFIGURASI ===
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN; 
-const CHAT_ID = process.env.CHAT_ID; 
-const bot = new TelegramBot(TELEGRAM_TOKEN);
+// ganti ini dengan TOKEN BOT Telegram mu
+const TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN";
+const CHAT_ID = "YOUR_CHAT_ID"; // id grup / user telegram
 
-// === ROUTE FORM ===
-app.post('/order-form', (req, res) => {
+app.post("/order", async (req, res) => {
   const { nama, produk, jumlah, catatan } = req.body;
-  const pesan = `
-🛒 Order Baru Masuk
+
+  const text = `🛒 Order Baru Masuk
 👤 Nama: ${nama}
 📦 Produk: ${produk}
 🔢 Jumlah: ${jumlah}
-📝 Catatan: ${catatan || "-"}
-`;
+📝 Catatan: ${catatan}`;
 
-  bot.sendMessage(CHAT_ID, pesan);
-  res.send("Order berhasil dikirim!");
+  // kirim ke telegram
+  await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: CHAT_ID, text }),
+  });
+
+  res.json({ status: "ok", message: "Order diterima" });
 });
 
-// === TEST ROUTE ===
-app.get('/', (req, res) => {
-  res.send('Order Bot aktif 🚀');
-});
-
-// === START SERVER ===
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server jalan di port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
